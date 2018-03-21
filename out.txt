@@ -1,0 +1,206 @@
+x : ID1 
+     n : NUM
+   n : NUM
+   
+ n : FLOAT_CONST
+n : FLOAT_CONST
+n : NUM
+n : NUM
+float_arr : n COMMA nfloat_arr : n COMMA float_arr
+float_arr : n COMMA float_arr
+job_objclass_obj : job_obj
+obj_constr : x EQUAL class_obj
+statement : obj_constr DEL
+
+x : ID1 
+   mem_type : PRIMARY
+   mem_obj : MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES
+class_obj : mem_obj
+obj_constr : x EQUAL class_obj
+statement : obj_constr DEL
+
+x : ID1 
+        n : NUM
+ n : NUM
+link_obj
+class_obj : link_obj
+obj_constr : x EQUAL class_obj
+statement : obj_constr DEL
+
+x : ID1 
+    isa_type : ARM
+   n : NUM
+   processor_obj
+class_obj : processor_obj
+obj_constr : x EQUAL class_obj
+statement : obj_constr DEL
+
+x : ID1 
+       top_type : STAR
+ n : NUM
+ n : NUM
+   cluster_obj
+class_obj : cluster_obj
+obj_constr : x EQUAL class_obj
+statement : obj_constr DEL
+
+
+mul : factor
+arithmatic_op : mul
+expr : ID EQUAL  arithmatic_op
+ factor : ID 
+mul : factor
+arithmatic_op : mul
+mul : factor
+arithmatic_op : mul
+condition : arithmatic_op COMPARATOR arithmatic_op
+ factor : ID 
+mul : factor
+arithmatic_op : mul
+condition : arithmatic_op UNARY_OP
+expr : condition
+
+	  factor : ID 
+mul : factor
+factor : ID 
+mul : factor
+arithmatic_op : mul
+arithmatic_op : mul SUM arithmatic_op
+expr : ID EQUAL  arithmatic_op
+statement : expr DEL
+
+statement_list : statement statement_list
+for_loop
+loop : for_loop
+statement : loop
+
+
+x : ID1 
+parameter : x
+proc_func_call : RUN OPENPR parameter CLOSEPR
+func_call : proc_func_call
+statement : func_call DEL
+
+wait_call : WAIT OPENPR NUM CLOSEPR
+func_call : wait_call
+statement : func_call DEL
+
+
+ factor : ID 
+mul : factor
+arithmatic_op : mul
+factor : ID 
+ mul : factor
+arithmatic_op : mul
+condition : arithmatic_op COMPARATOR arithmatic_op
+
+	  factor : ID 
+mul : factor
+factor : ID 
+mul : factor
+arithmatic_op : mul
+arithmatic_op : mul SUM arithmatic_op
+expr : ID EQUAL  arithmatic_op
+statement : expr DEL
+
+statement_list : statement statement_list
+
+
+ifstmnt
+statement : ifstmnt 
+ factor : ID 
+mul : factor
+arithmatic_op : mul
+factor : ID 
+ mul : factor
+arithmatic_op : mul
+condition : arithmatic_op COMPARATOR arithmatic_op
+
+	  factor : ID 
+mul : factor
+factor : ID 
+mul : factor
+arithmatic_op : mul
+arithmatic_op : mul SUM arithmatic_op
+expr : ID EQUAL  arithmatic_op
+statement : expr DEL
+
+statement_list : statement statement_list
+
+
+	  factor : ID 
+mul : factor
+factor : ID 
+mul : factor
+arithmatic_op : mul
+arithmatic_op : mul SUM arithmatic_op
+expr : ID EQUAL  arithmatic_op
+statement : expr DEL
+
+statement_list : statement statement_list
+ifstmnt
+statement : ifstmnt 
+
+
+ factor : ID 
+ mul : factor
+arithmatic_op : mul
+ mul : factor
+arithmatic_op : mul
+condition : arithmatic_op COMPARATOR arithmatic_op
+ 
+	  factor : ID 
+mul : factor
+factor : ID 
+mul : factor
+arithmatic_op : mul
+arithmatic_op : mul SUM arithmatic_op
+expr : ID EQUAL  arithmatic_op
+statement : expr DEL
+
+statement_list : statement statement_list
+while_loop
+loop : while_loop
+statement : loop
+
+
+mul : factor
+arithmatic_op : mul
+expr : ID EQUAL  arithmatic_op
+ factor : ID 
+mul : factor
+arithmatic_op : mul
+mul : factor
+arithmatic_op : mul
+condition : arithmatic_op COMPARATOR arithmatic_op
+ factor : ID 
+mul : factor
+arithmatic_op : mul
+condition : arithmatic_op UNARY_OP
+expr : condition
+
+	  factor : ID 
+mul : factor
+mul : factor
+arithmatic_op : mul
+arithmatic_op : mul SUM arithmatic_op
+expr : ID EQUAL  arithmatic_op
+statement : expr DEL
+
+statement_list : statement statement_list
+for_loop
+loop : for_loop
+statement : loop
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+statement_list : statement statement_list
+program : statement_list

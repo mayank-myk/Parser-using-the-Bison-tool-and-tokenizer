@@ -1,0 +1,2451 @@
+Terminals unused in grammar
+
+   MEMORY_SIZE
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: statement_list
+
+    2 statement_list: statement statement_list
+    3               | %empty
+
+    4 statement: var_decl DEL
+    5          | loop
+    6          | ifstmnt
+    7          | func_call DEL
+    8          | expr DEL
+    9          | obj_constr DEL
+
+   10 var_decl: var_type x
+
+   11 var_type: INT
+   12         | STRING
+   13         | BOOL
+   14         | FLOAT
+
+   15 loop: for_loop
+   16     | while_loop
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL expr CLOSEPR OPENBR statement_list CLOSEBR
+
+   18 while_loop: WHILE OPENPR condition CLOSEPR OPENBR statement_list CLOSEBR
+
+   19 ifstmnt: IF condition OPENBR statement_list CLOSEBR ELSE OPENBR statement_list CLOSEBR
+   20        | IF condition OPENBR statement_list CLOSEBR
+
+   21 func_call: proc_func_call
+   22          | mem_func_call
+   23          | job_func_call
+   24          | wait_call
+
+   25 wait_call: WAIT OPENPR NUM CLOSEPR
+
+   26 proc_func_call: x EQUAL x DOT IS_RUNNING OPENPR CLOSEPR
+   27               | x DOT SUBMIT_JOBS OPENPR parameter CLOSEPR
+   28               | x DOT GET_CLOCK_SPEED OPENPR CLOSEPR
+   29               | RUN OPENPR parameter CLOSEPR
+   30               | DISCARD_JOB OPENPR x CLOSEPR
+
+   31 mem_func_call: x DOT GET_AVAILABLE_MEMORY OPENPR CLOSEPR
+
+   32 job_func_call: x DOT GET_MEMORY OPENPR CLOSEPR
+
+   33 obj_constr: x EQUAL class_obj
+
+   34 class_obj: processor_obj
+   35          | mem_obj
+   36          | job_obj
+   37          | link_obj
+   38          | cluster_obj
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+   40 isa_type: ARM
+   41         | AMD
+   42         | CDC
+   43         | MIPS OPENPR STRING_CONST CLOSEPR
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE EQUAL NUM CLOSEPR
+   45        | MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+   46 mem_type: PRIMARY
+   47         | SECONDARY
+   48         | CACHE OPENPR STRING_CONST CLOSEPR
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+   51 float_arr: n COMMA float_arr
+   52          | n COMMA n
+
+   53 n: FLOAT_CONST
+   54  | NUM
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+   56            | %empty
+
+   57 top_type: STAR
+   58         | RING
+   59         | BUS
+
+   60 parameter: x
+   61          | OPENSQ var_list CLOSESQ
+
+   62 var_list: x more_var
+
+   63 more_var: COMMA x
+   64         | COMMA x more_var
+
+   65 expr: ID EQUAL condition
+   66     | ID EQUAL arithmatic_op
+   67     | condition
+
+   68 condition: arithmatic_op COMPARATOR arithmatic_op
+   69          | UNARY_OP arithmatic_op
+   70          | arithmatic_op UNARY_OP
+
+   71 arithmatic_op: mul SUM arithmatic_op
+   72              | mul
+
+   73 mul: factor MULT mul
+   74    | factor
+
+   75 factor: ID
+   76       | OPENPR arithmatic_op OPENPR
+   77       | NUM
+   78       | FLOAT_CONST
+
+   79 x: VAR
+   80  | ID1
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+NUM (258) 25 44 45 50 54 77
+INT (259) 11
+FLOAT (260) 14
+FLOAT_CONST (261) 53 78
+STRING (262) 12
+STRING_CONST (263) 43 45 48 49 55
+BOOL (264) 13
+DEL (265) 4 7 8 9 17
+ID (266) 55 65 66 75
+COMPARATOR (267) 68
+CLOSESQ (268) 50 61
+OPENSQ (269) 50 61
+OPENBR (270) 17 18 19 20
+CLOSEBR (271) 17 18 19 20
+OPENPR (272) 17 18 25 26 27 28 29 30 31 32 39 43 44 45 48 49 50 55
+    76
+ID1 (273) 39 80
+PROCESSORS (274) 55
+CLOSEPR (275) 17 18 25 26 27 28 29 30 31 32 39 43 44 45 48 49 50 55
+EQUAL (276) 26 33 39 44 45 49 50 55 65 66
+QUOTES (277) 45
+COMMA (278) 39 44 45 49 50 51 52 55 63 64
+COLON (279) 39
+DOT (280) 26 27 28 31 32
+FOR (281) 17
+WHILE (282) 18
+IF (283) 19 20
+ELSE (284) 19
+IS_RUNNING (285) 26
+SUBMIT_JOBS (286) 27
+GET_CLOCK_SPEED (287) 28
+DISCARD_JOB (288) 30
+JOB_ID (289) 50
+GET_AVAILABLE_MEMORY (290) 31
+GET_MEMORY (291) 32
+MEM_SIZE (292) 44 45
+VAR (293) 79
+PROCESSOR (294) 39
+ISA (295) 39
+CLOCK_SPEED (296) 39
+L1_MEM (297) 39
+ARM (298) 40
+AMD (299) 41
+CDC (300) 42
+MIPS (301) 43
+MEMORY (302) 44 45
+MEMORY_TYPE (303) 44 45
+MEMORY_SIZE (304)
+PRIMARY (305) 46
+SECONDARY (306) 47
+CACHE (307) 48
+LINK (308) 49
+START_POINT (309) 49
+END_POINT (310) 49
+BANDWIDTH (311) 49
+JOB (312) 50
+FLOPS_REQUIRED (313) 50
+DEADLINE (314) 50
+MEM_REQUIRED (315) 50
+AFFINITY (316) 50
+RUN (317) 29
+WAIT (318) 25
+CLUSTER (319) 55
+TOPOLOGY (320) 55
+NAME (321) 45 55
+STAR (322) 57
+RING (323) 58
+BUS (324) 59
+SUM (325) 71
+MULT (326) 73
+UNARY_OP (327) 69 70
+
+
+Nonterminals, with rules where they appear
+
+$accept (73)
+    on left: 0
+program (74)
+    on left: 1, on right: 0
+statement_list (75)
+    on left: 2 3, on right: 1 2 17 18 19 20
+statement (76)
+    on left: 4 5 6 7 8 9, on right: 2
+var_decl (77)
+    on left: 10, on right: 4
+var_type (78)
+    on left: 11 12 13 14, on right: 10
+loop (79)
+    on left: 15 16, on right: 5
+for_loop (80)
+    on left: 17, on right: 15
+while_loop (81)
+    on left: 18, on right: 16
+ifstmnt (82)
+    on left: 19 20, on right: 6
+func_call (83)
+    on left: 21 22 23 24, on right: 7
+wait_call (84)
+    on left: 25, on right: 24
+proc_func_call (85)
+    on left: 26 27 28 29 30, on right: 21
+mem_func_call (86)
+    on left: 31, on right: 22
+job_func_call (87)
+    on left: 32, on right: 23
+obj_constr (88)
+    on left: 33, on right: 9
+class_obj (89)
+    on left: 34 35 36 37 38, on right: 33
+processor_obj (90)
+    on left: 39, on right: 34
+isa_type (91)
+    on left: 40 41 42 43, on right: 39
+mem_obj (92)
+    on left: 44 45, on right: 35
+mem_type (93)
+    on left: 46 47 48, on right: 44 45
+link_obj (94)
+    on left: 49, on right: 37
+job_obj (95)
+    on left: 50, on right: 36
+float_arr (96)
+    on left: 51 52, on right: 50 51
+n (97)
+    on left: 53 54, on right: 39 49 50 51 52 55
+cluster_obj (98)
+    on left: 55 56, on right: 38
+top_type (99)
+    on left: 57 58 59, on right: 55
+parameter (100)
+    on left: 60 61, on right: 27 29
+var_list (101)
+    on left: 62, on right: 61
+more_var (102)
+    on left: 63 64, on right: 62 64
+expr (103)
+    on left: 65 66 67, on right: 8 17
+condition (104)
+    on left: 68 69 70, on right: 17 18 19 20 65 67
+arithmatic_op (105)
+    on left: 71 72, on right: 66 68 69 70 71 76
+mul (106)
+    on left: 73 74, on right: 71 72 73
+factor (107)
+    on left: 75 76 77 78, on right: 73 74
+x (108)
+    on left: 79 80, on right: 10 26 27 28 30 31 32 33 60 62 63 64
+
+
+State 0
+
+    0 $accept: . program $end
+
+    NUM          shift, and go to state 1
+    INT          shift, and go to state 2
+    FLOAT        shift, and go to state 3
+    FLOAT_CONST  shift, and go to state 4
+    STRING       shift, and go to state 5
+    BOOL         shift, and go to state 6
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    ID1          shift, and go to state 9
+    FOR          shift, and go to state 10
+    WHILE        shift, and go to state 11
+    IF           shift, and go to state 12
+    DISCARD_JOB  shift, and go to state 13
+    VAR          shift, and go to state 14
+    RUN          shift, and go to state 15
+    WAIT         shift, and go to state 16
+    UNARY_OP     shift, and go to state 17
+
+    $default  reduce using rule 3 (statement_list)
+
+    program         go to state 18
+    statement_list  go to state 19
+    statement       go to state 20
+    var_decl        go to state 21
+    var_type        go to state 22
+    loop            go to state 23
+    for_loop        go to state 24
+    while_loop      go to state 25
+    ifstmnt         go to state 26
+    func_call       go to state 27
+    wait_call       go to state 28
+    proc_func_call  go to state 29
+    mem_func_call   go to state 30
+    job_func_call   go to state 31
+    obj_constr      go to state 32
+    expr            go to state 33
+    condition       go to state 34
+    arithmatic_op   go to state 35
+    mul             go to state 36
+    factor          go to state 37
+    x               go to state 38
+
+
+State 1
+
+   77 factor: NUM .
+
+    $default  reduce using rule 77 (factor)
+
+
+State 2
+
+   11 var_type: INT .
+
+    $default  reduce using rule 11 (var_type)
+
+
+State 3
+
+   14 var_type: FLOAT .
+
+    $default  reduce using rule 14 (var_type)
+
+
+State 4
+
+   78 factor: FLOAT_CONST .
+
+    $default  reduce using rule 78 (factor)
+
+
+State 5
+
+   12 var_type: STRING .
+
+    $default  reduce using rule 12 (var_type)
+
+
+State 6
+
+   13 var_type: BOOL .
+
+    $default  reduce using rule 13 (var_type)
+
+
+State 7
+
+   65 expr: ID . EQUAL condition
+   66     | ID . EQUAL arithmatic_op
+   75 factor: ID .
+
+    EQUAL  shift, and go to state 39
+
+    $default  reduce using rule 75 (factor)
+
+
+State 8
+
+   76 factor: OPENPR . arithmatic_op OPENPR
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+
+    arithmatic_op  go to state 41
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 9
+
+   80 x: ID1 .
+
+    $default  reduce using rule 80 (x)
+
+
+State 10
+
+   17 for_loop: FOR . OPENPR expr DEL condition DEL expr CLOSEPR OPENBR statement_list CLOSEBR
+
+    OPENPR  shift, and go to state 42
+
+
+State 11
+
+   18 while_loop: WHILE . OPENPR condition CLOSEPR OPENBR statement_list CLOSEBR
+
+    OPENPR  shift, and go to state 43
+
+
+State 12
+
+   19 ifstmnt: IF . condition OPENBR statement_list CLOSEBR ELSE OPENBR statement_list CLOSEBR
+   20        | IF . condition OPENBR statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+    UNARY_OP     shift, and go to state 17
+
+    condition      go to state 44
+    arithmatic_op  go to state 35
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 13
+
+   30 proc_func_call: DISCARD_JOB . OPENPR x CLOSEPR
+
+    OPENPR  shift, and go to state 45
+
+
+State 14
+
+   79 x: VAR .
+
+    $default  reduce using rule 79 (x)
+
+
+State 15
+
+   29 proc_func_call: RUN . OPENPR parameter CLOSEPR
+
+    OPENPR  shift, and go to state 46
+
+
+State 16
+
+   25 wait_call: WAIT . OPENPR NUM CLOSEPR
+
+    OPENPR  shift, and go to state 47
+
+
+State 17
+
+   69 condition: UNARY_OP . arithmatic_op
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+
+    arithmatic_op  go to state 48
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 18
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 49
+
+
+State 19
+
+    1 program: statement_list .
+
+    $default  reduce using rule 1 (program)
+
+
+State 20
+
+    2 statement_list: statement . statement_list
+
+    NUM          shift, and go to state 1
+    INT          shift, and go to state 2
+    FLOAT        shift, and go to state 3
+    FLOAT_CONST  shift, and go to state 4
+    STRING       shift, and go to state 5
+    BOOL         shift, and go to state 6
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    ID1          shift, and go to state 9
+    FOR          shift, and go to state 10
+    WHILE        shift, and go to state 11
+    IF           shift, and go to state 12
+    DISCARD_JOB  shift, and go to state 13
+    VAR          shift, and go to state 14
+    RUN          shift, and go to state 15
+    WAIT         shift, and go to state 16
+    UNARY_OP     shift, and go to state 17
+
+    $default  reduce using rule 3 (statement_list)
+
+    statement_list  go to state 50
+    statement       go to state 20
+    var_decl        go to state 21
+    var_type        go to state 22
+    loop            go to state 23
+    for_loop        go to state 24
+    while_loop      go to state 25
+    ifstmnt         go to state 26
+    func_call       go to state 27
+    wait_call       go to state 28
+    proc_func_call  go to state 29
+    mem_func_call   go to state 30
+    job_func_call   go to state 31
+    obj_constr      go to state 32
+    expr            go to state 33
+    condition       go to state 34
+    arithmatic_op   go to state 35
+    mul             go to state 36
+    factor          go to state 37
+    x               go to state 38
+
+
+State 21
+
+    4 statement: var_decl . DEL
+
+    DEL  shift, and go to state 51
+
+
+State 22
+
+   10 var_decl: var_type . x
+
+    ID1  shift, and go to state 9
+    VAR  shift, and go to state 14
+
+    x  go to state 52
+
+
+State 23
+
+    5 statement: loop .
+
+    $default  reduce using rule 5 (statement)
+
+
+State 24
+
+   15 loop: for_loop .
+
+    $default  reduce using rule 15 (loop)
+
+
+State 25
+
+   16 loop: while_loop .
+
+    $default  reduce using rule 16 (loop)
+
+
+State 26
+
+    6 statement: ifstmnt .
+
+    $default  reduce using rule 6 (statement)
+
+
+State 27
+
+    7 statement: func_call . DEL
+
+    DEL  shift, and go to state 53
+
+
+State 28
+
+   24 func_call: wait_call .
+
+    $default  reduce using rule 24 (func_call)
+
+
+State 29
+
+   21 func_call: proc_func_call .
+
+    $default  reduce using rule 21 (func_call)
+
+
+State 30
+
+   22 func_call: mem_func_call .
+
+    $default  reduce using rule 22 (func_call)
+
+
+State 31
+
+   23 func_call: job_func_call .
+
+    $default  reduce using rule 23 (func_call)
+
+
+State 32
+
+    9 statement: obj_constr . DEL
+
+    DEL  shift, and go to state 54
+
+
+State 33
+
+    8 statement: expr . DEL
+
+    DEL  shift, and go to state 55
+
+
+State 34
+
+   67 expr: condition .
+
+    $default  reduce using rule 67 (expr)
+
+
+State 35
+
+   68 condition: arithmatic_op . COMPARATOR arithmatic_op
+   70          | arithmatic_op . UNARY_OP
+
+    COMPARATOR  shift, and go to state 56
+    UNARY_OP    shift, and go to state 57
+
+
+State 36
+
+   71 arithmatic_op: mul . SUM arithmatic_op
+   72              | mul .
+
+    SUM  shift, and go to state 58
+
+    $default  reduce using rule 72 (arithmatic_op)
+
+
+State 37
+
+   73 mul: factor . MULT mul
+   74    | factor .
+
+    MULT  shift, and go to state 59
+
+    $default  reduce using rule 74 (mul)
+
+
+State 38
+
+   26 proc_func_call: x . EQUAL x DOT IS_RUNNING OPENPR CLOSEPR
+   27               | x . DOT SUBMIT_JOBS OPENPR parameter CLOSEPR
+   28               | x . DOT GET_CLOCK_SPEED OPENPR CLOSEPR
+   31 mem_func_call: x . DOT GET_AVAILABLE_MEMORY OPENPR CLOSEPR
+   32 job_func_call: x . DOT GET_MEMORY OPENPR CLOSEPR
+   33 obj_constr: x . EQUAL class_obj
+
+    EQUAL  shift, and go to state 60
+    DOT    shift, and go to state 61
+
+
+State 39
+
+   65 expr: ID EQUAL . condition
+   66     | ID EQUAL . arithmatic_op
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+    UNARY_OP     shift, and go to state 17
+
+    condition      go to state 62
+    arithmatic_op  go to state 63
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 40
+
+   75 factor: ID .
+
+    $default  reduce using rule 75 (factor)
+
+
+State 41
+
+   76 factor: OPENPR arithmatic_op . OPENPR
+
+    OPENPR  shift, and go to state 64
+
+
+State 42
+
+   17 for_loop: FOR OPENPR . expr DEL condition DEL expr CLOSEPR OPENBR statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    UNARY_OP     shift, and go to state 17
+
+    expr           go to state 65
+    condition      go to state 34
+    arithmatic_op  go to state 35
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 43
+
+   18 while_loop: WHILE OPENPR . condition CLOSEPR OPENBR statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+    UNARY_OP     shift, and go to state 17
+
+    condition      go to state 66
+    arithmatic_op  go to state 35
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 44
+
+   19 ifstmnt: IF condition . OPENBR statement_list CLOSEBR ELSE OPENBR statement_list CLOSEBR
+   20        | IF condition . OPENBR statement_list CLOSEBR
+
+    OPENBR  shift, and go to state 67
+
+
+State 45
+
+   30 proc_func_call: DISCARD_JOB OPENPR . x CLOSEPR
+
+    ID1  shift, and go to state 9
+    VAR  shift, and go to state 14
+
+    x  go to state 68
+
+
+State 46
+
+   29 proc_func_call: RUN OPENPR . parameter CLOSEPR
+
+    OPENSQ  shift, and go to state 69
+    ID1     shift, and go to state 9
+    VAR     shift, and go to state 14
+
+    parameter  go to state 70
+    x          go to state 71
+
+
+State 47
+
+   25 wait_call: WAIT OPENPR . NUM CLOSEPR
+
+    NUM  shift, and go to state 72
+
+
+State 48
+
+   69 condition: UNARY_OP arithmatic_op .
+
+    $default  reduce using rule 69 (condition)
+
+
+State 49
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 50
+
+    2 statement_list: statement statement_list .
+
+    $default  reduce using rule 2 (statement_list)
+
+
+State 51
+
+    4 statement: var_decl DEL .
+
+    $default  reduce using rule 4 (statement)
+
+
+State 52
+
+   10 var_decl: var_type x .
+
+    $default  reduce using rule 10 (var_decl)
+
+
+State 53
+
+    7 statement: func_call DEL .
+
+    $default  reduce using rule 7 (statement)
+
+
+State 54
+
+    9 statement: obj_constr DEL .
+
+    $default  reduce using rule 9 (statement)
+
+
+State 55
+
+    8 statement: expr DEL .
+
+    $default  reduce using rule 8 (statement)
+
+
+State 56
+
+   68 condition: arithmatic_op COMPARATOR . arithmatic_op
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+
+    arithmatic_op  go to state 73
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 57
+
+   70 condition: arithmatic_op UNARY_OP .
+
+    $default  reduce using rule 70 (condition)
+
+
+State 58
+
+   71 arithmatic_op: mul SUM . arithmatic_op
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+
+    arithmatic_op  go to state 74
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 59
+
+   73 mul: factor MULT . mul
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+
+    mul     go to state 75
+    factor  go to state 37
+
+
+State 60
+
+   26 proc_func_call: x EQUAL . x DOT IS_RUNNING OPENPR CLOSEPR
+   33 obj_constr: x EQUAL . class_obj
+
+    ID1        shift, and go to state 9
+    VAR        shift, and go to state 14
+    PROCESSOR  shift, and go to state 76
+    MEMORY     shift, and go to state 77
+    LINK       shift, and go to state 78
+    JOB        shift, and go to state 79
+    CLUSTER    shift, and go to state 80
+
+    $default  reduce using rule 56 (cluster_obj)
+
+    class_obj      go to state 81
+    processor_obj  go to state 82
+    mem_obj        go to state 83
+    link_obj       go to state 84
+    job_obj        go to state 85
+    cluster_obj    go to state 86
+    x              go to state 87
+
+
+State 61
+
+   27 proc_func_call: x DOT . SUBMIT_JOBS OPENPR parameter CLOSEPR
+   28               | x DOT . GET_CLOCK_SPEED OPENPR CLOSEPR
+   31 mem_func_call: x DOT . GET_AVAILABLE_MEMORY OPENPR CLOSEPR
+   32 job_func_call: x DOT . GET_MEMORY OPENPR CLOSEPR
+
+    SUBMIT_JOBS           shift, and go to state 88
+    GET_CLOCK_SPEED       shift, and go to state 89
+    GET_AVAILABLE_MEMORY  shift, and go to state 90
+    GET_MEMORY            shift, and go to state 91
+
+
+State 62
+
+   65 expr: ID EQUAL condition .
+
+    $default  reduce using rule 65 (expr)
+
+
+State 63
+
+   66 expr: ID EQUAL arithmatic_op .
+   68 condition: arithmatic_op . COMPARATOR arithmatic_op
+   70          | arithmatic_op . UNARY_OP
+
+    COMPARATOR  shift, and go to state 56
+    UNARY_OP    shift, and go to state 57
+
+    $default  reduce using rule 66 (expr)
+
+
+State 64
+
+   76 factor: OPENPR arithmatic_op OPENPR .
+
+    $default  reduce using rule 76 (factor)
+
+
+State 65
+
+   17 for_loop: FOR OPENPR expr . DEL condition DEL expr CLOSEPR OPENBR statement_list CLOSEBR
+
+    DEL  shift, and go to state 92
+
+
+State 66
+
+   18 while_loop: WHILE OPENPR condition . CLOSEPR OPENBR statement_list CLOSEBR
+
+    CLOSEPR  shift, and go to state 93
+
+
+State 67
+
+   19 ifstmnt: IF condition OPENBR . statement_list CLOSEBR ELSE OPENBR statement_list CLOSEBR
+   20        | IF condition OPENBR . statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    INT          shift, and go to state 2
+    FLOAT        shift, and go to state 3
+    FLOAT_CONST  shift, and go to state 4
+    STRING       shift, and go to state 5
+    BOOL         shift, and go to state 6
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    ID1          shift, and go to state 9
+    FOR          shift, and go to state 10
+    WHILE        shift, and go to state 11
+    IF           shift, and go to state 12
+    DISCARD_JOB  shift, and go to state 13
+    VAR          shift, and go to state 14
+    RUN          shift, and go to state 15
+    WAIT         shift, and go to state 16
+    UNARY_OP     shift, and go to state 17
+
+    $default  reduce using rule 3 (statement_list)
+
+    statement_list  go to state 94
+    statement       go to state 20
+    var_decl        go to state 21
+    var_type        go to state 22
+    loop            go to state 23
+    for_loop        go to state 24
+    while_loop      go to state 25
+    ifstmnt         go to state 26
+    func_call       go to state 27
+    wait_call       go to state 28
+    proc_func_call  go to state 29
+    mem_func_call   go to state 30
+    job_func_call   go to state 31
+    obj_constr      go to state 32
+    expr            go to state 33
+    condition       go to state 34
+    arithmatic_op   go to state 35
+    mul             go to state 36
+    factor          go to state 37
+    x               go to state 38
+
+
+State 68
+
+   30 proc_func_call: DISCARD_JOB OPENPR x . CLOSEPR
+
+    CLOSEPR  shift, and go to state 95
+
+
+State 69
+
+   61 parameter: OPENSQ . var_list CLOSESQ
+
+    ID1  shift, and go to state 9
+    VAR  shift, and go to state 14
+
+    var_list  go to state 96
+    x         go to state 97
+
+
+State 70
+
+   29 proc_func_call: RUN OPENPR parameter . CLOSEPR
+
+    CLOSEPR  shift, and go to state 98
+
+
+State 71
+
+   60 parameter: x .
+
+    $default  reduce using rule 60 (parameter)
+
+
+State 72
+
+   25 wait_call: WAIT OPENPR NUM . CLOSEPR
+
+    CLOSEPR  shift, and go to state 99
+
+
+State 73
+
+   68 condition: arithmatic_op COMPARATOR arithmatic_op .
+
+    $default  reduce using rule 68 (condition)
+
+
+State 74
+
+   71 arithmatic_op: mul SUM arithmatic_op .
+
+    $default  reduce using rule 71 (arithmatic_op)
+
+
+State 75
+
+   73 mul: factor MULT mul .
+
+    $default  reduce using rule 73 (mul)
+
+
+State 76
+
+   39 processor_obj: PROCESSOR . OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    OPENPR  shift, and go to state 100
+
+
+State 77
+
+   44 mem_obj: MEMORY . OPENPR MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE EQUAL NUM CLOSEPR
+   45        | MEMORY . OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    OPENPR  shift, and go to state 101
+
+
+State 78
+
+   49 link_obj: LINK . OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    OPENPR  shift, and go to state 102
+
+
+State 79
+
+   50 job_obj: JOB . OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    OPENPR  shift, and go to state 103
+
+
+State 80
+
+   55 cluster_obj: CLUSTER . OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    OPENPR  shift, and go to state 104
+
+
+State 81
+
+   33 obj_constr: x EQUAL class_obj .
+
+    $default  reduce using rule 33 (obj_constr)
+
+
+State 82
+
+   34 class_obj: processor_obj .
+
+    $default  reduce using rule 34 (class_obj)
+
+
+State 83
+
+   35 class_obj: mem_obj .
+
+    $default  reduce using rule 35 (class_obj)
+
+
+State 84
+
+   37 class_obj: link_obj .
+
+    $default  reduce using rule 37 (class_obj)
+
+
+State 85
+
+   36 class_obj: job_obj .
+
+    $default  reduce using rule 36 (class_obj)
+
+
+State 86
+
+   38 class_obj: cluster_obj .
+
+    $default  reduce using rule 38 (class_obj)
+
+
+State 87
+
+   26 proc_func_call: x EQUAL x . DOT IS_RUNNING OPENPR CLOSEPR
+
+    DOT  shift, and go to state 105
+
+
+State 88
+
+   27 proc_func_call: x DOT SUBMIT_JOBS . OPENPR parameter CLOSEPR
+
+    OPENPR  shift, and go to state 106
+
+
+State 89
+
+   28 proc_func_call: x DOT GET_CLOCK_SPEED . OPENPR CLOSEPR
+
+    OPENPR  shift, and go to state 107
+
+
+State 90
+
+   31 mem_func_call: x DOT GET_AVAILABLE_MEMORY . OPENPR CLOSEPR
+
+    OPENPR  shift, and go to state 108
+
+
+State 91
+
+   32 job_func_call: x DOT GET_MEMORY . OPENPR CLOSEPR
+
+    OPENPR  shift, and go to state 109
+
+
+State 92
+
+   17 for_loop: FOR OPENPR expr DEL . condition DEL expr CLOSEPR OPENBR statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 40
+    OPENPR       shift, and go to state 8
+    UNARY_OP     shift, and go to state 17
+
+    condition      go to state 110
+    arithmatic_op  go to state 35
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 93
+
+   18 while_loop: WHILE OPENPR condition CLOSEPR . OPENBR statement_list CLOSEBR
+
+    OPENBR  shift, and go to state 111
+
+
+State 94
+
+   19 ifstmnt: IF condition OPENBR statement_list . CLOSEBR ELSE OPENBR statement_list CLOSEBR
+   20        | IF condition OPENBR statement_list . CLOSEBR
+
+    CLOSEBR  shift, and go to state 112
+
+
+State 95
+
+   30 proc_func_call: DISCARD_JOB OPENPR x CLOSEPR .
+
+    $default  reduce using rule 30 (proc_func_call)
+
+
+State 96
+
+   61 parameter: OPENSQ var_list . CLOSESQ
+
+    CLOSESQ  shift, and go to state 113
+
+
+State 97
+
+   62 var_list: x . more_var
+
+    COMMA  shift, and go to state 114
+
+    more_var  go to state 115
+
+
+State 98
+
+   29 proc_func_call: RUN OPENPR parameter CLOSEPR .
+
+    $default  reduce using rule 29 (proc_func_call)
+
+
+State 99
+
+   25 wait_call: WAIT OPENPR NUM CLOSEPR .
+
+    $default  reduce using rule 25 (wait_call)
+
+
+State 100
+
+   39 processor_obj: PROCESSOR OPENPR . ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    ISA  shift, and go to state 116
+
+
+State 101
+
+   44 mem_obj: MEMORY OPENPR . MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE EQUAL NUM CLOSEPR
+   45        | MEMORY OPENPR . MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    MEMORY_TYPE  shift, and go to state 117
+
+
+State 102
+
+   49 link_obj: LINK OPENPR . START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    START_POINT  shift, and go to state 118
+
+
+State 103
+
+   50 job_obj: JOB OPENPR . JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    JOB_ID  shift, and go to state 119
+
+
+State 104
+
+   55 cluster_obj: CLUSTER OPENPR . PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    PROCESSORS  shift, and go to state 120
+
+
+State 105
+
+   26 proc_func_call: x EQUAL x DOT . IS_RUNNING OPENPR CLOSEPR
+
+    IS_RUNNING  shift, and go to state 121
+
+
+State 106
+
+   27 proc_func_call: x DOT SUBMIT_JOBS OPENPR . parameter CLOSEPR
+
+    OPENSQ  shift, and go to state 69
+    ID1     shift, and go to state 9
+    VAR     shift, and go to state 14
+
+    parameter  go to state 122
+    x          go to state 71
+
+
+State 107
+
+   28 proc_func_call: x DOT GET_CLOCK_SPEED OPENPR . CLOSEPR
+
+    CLOSEPR  shift, and go to state 123
+
+
+State 108
+
+   31 mem_func_call: x DOT GET_AVAILABLE_MEMORY OPENPR . CLOSEPR
+
+    CLOSEPR  shift, and go to state 124
+
+
+State 109
+
+   32 job_func_call: x DOT GET_MEMORY OPENPR . CLOSEPR
+
+    CLOSEPR  shift, and go to state 125
+
+
+State 110
+
+   17 for_loop: FOR OPENPR expr DEL condition . DEL expr CLOSEPR OPENBR statement_list CLOSEBR
+
+    DEL  shift, and go to state 126
+
+
+State 111
+
+   18 while_loop: WHILE OPENPR condition CLOSEPR OPENBR . statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    INT          shift, and go to state 2
+    FLOAT        shift, and go to state 3
+    FLOAT_CONST  shift, and go to state 4
+    STRING       shift, and go to state 5
+    BOOL         shift, and go to state 6
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    ID1          shift, and go to state 9
+    FOR          shift, and go to state 10
+    WHILE        shift, and go to state 11
+    IF           shift, and go to state 12
+    DISCARD_JOB  shift, and go to state 13
+    VAR          shift, and go to state 14
+    RUN          shift, and go to state 15
+    WAIT         shift, and go to state 16
+    UNARY_OP     shift, and go to state 17
+
+    $default  reduce using rule 3 (statement_list)
+
+    statement_list  go to state 127
+    statement       go to state 20
+    var_decl        go to state 21
+    var_type        go to state 22
+    loop            go to state 23
+    for_loop        go to state 24
+    while_loop      go to state 25
+    ifstmnt         go to state 26
+    func_call       go to state 27
+    wait_call       go to state 28
+    proc_func_call  go to state 29
+    mem_func_call   go to state 30
+    job_func_call   go to state 31
+    obj_constr      go to state 32
+    expr            go to state 33
+    condition       go to state 34
+    arithmatic_op   go to state 35
+    mul             go to state 36
+    factor          go to state 37
+    x               go to state 38
+
+
+State 112
+
+   19 ifstmnt: IF condition OPENBR statement_list CLOSEBR . ELSE OPENBR statement_list CLOSEBR
+   20        | IF condition OPENBR statement_list CLOSEBR .
+
+    ELSE  shift, and go to state 128
+
+    $default  reduce using rule 20 (ifstmnt)
+
+
+State 113
+
+   61 parameter: OPENSQ var_list CLOSESQ .
+
+    $default  reduce using rule 61 (parameter)
+
+
+State 114
+
+   63 more_var: COMMA . x
+   64         | COMMA . x more_var
+
+    ID1  shift, and go to state 9
+    VAR  shift, and go to state 14
+
+    x  go to state 129
+
+
+State 115
+
+   62 var_list: x more_var .
+
+    $default  reduce using rule 62 (var_list)
+
+
+State 116
+
+   39 processor_obj: PROCESSOR OPENPR ISA . EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    EQUAL  shift, and go to state 130
+
+
+State 117
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE . EQUAL mem_type COMMA MEM_SIZE EQUAL NUM CLOSEPR
+   45        | MEMORY OPENPR MEMORY_TYPE . EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    EQUAL  shift, and go to state 131
+
+
+State 118
+
+   49 link_obj: LINK OPENPR START_POINT . EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    EQUAL  shift, and go to state 132
+
+
+State 119
+
+   50 job_obj: JOB OPENPR JOB_ID . EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    EQUAL  shift, and go to state 133
+
+
+State 120
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS . EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    EQUAL  shift, and go to state 134
+
+
+State 121
+
+   26 proc_func_call: x EQUAL x DOT IS_RUNNING . OPENPR CLOSEPR
+
+    OPENPR  shift, and go to state 135
+
+
+State 122
+
+   27 proc_func_call: x DOT SUBMIT_JOBS OPENPR parameter . CLOSEPR
+
+    CLOSEPR  shift, and go to state 136
+
+
+State 123
+
+   28 proc_func_call: x DOT GET_CLOCK_SPEED OPENPR CLOSEPR .
+
+    $default  reduce using rule 28 (proc_func_call)
+
+
+State 124
+
+   31 mem_func_call: x DOT GET_AVAILABLE_MEMORY OPENPR CLOSEPR .
+
+    $default  reduce using rule 31 (mem_func_call)
+
+
+State 125
+
+   32 job_func_call: x DOT GET_MEMORY OPENPR CLOSEPR .
+
+    $default  reduce using rule 32 (job_func_call)
+
+
+State 126
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL . expr CLOSEPR OPENBR statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    FLOAT_CONST  shift, and go to state 4
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    UNARY_OP     shift, and go to state 17
+
+    expr           go to state 137
+    condition      go to state 34
+    arithmatic_op  go to state 35
+    mul            go to state 36
+    factor         go to state 37
+
+
+State 127
+
+   18 while_loop: WHILE OPENPR condition CLOSEPR OPENBR statement_list . CLOSEBR
+
+    CLOSEBR  shift, and go to state 138
+
+
+State 128
+
+   19 ifstmnt: IF condition OPENBR statement_list CLOSEBR ELSE . OPENBR statement_list CLOSEBR
+
+    OPENBR  shift, and go to state 139
+
+
+State 129
+
+   63 more_var: COMMA x .
+   64         | COMMA x . more_var
+
+    COMMA  shift, and go to state 114
+
+    $default  reduce using rule 63 (more_var)
+
+    more_var  go to state 140
+
+
+State 130
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL . isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    ARM   shift, and go to state 141
+    AMD   shift, and go to state 142
+    CDC   shift, and go to state 143
+    MIPS  shift, and go to state 144
+
+    isa_type  go to state 145
+
+
+State 131
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL . mem_type COMMA MEM_SIZE EQUAL NUM CLOSEPR
+   45        | MEMORY OPENPR MEMORY_TYPE EQUAL . QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    QUOTES     shift, and go to state 146
+    PRIMARY    shift, and go to state 147
+    SECONDARY  shift, and go to state 148
+    CACHE      shift, and go to state 149
+
+    mem_type  go to state 150
+
+
+State 132
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL . STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    STRING_CONST  shift, and go to state 151
+
+
+State 133
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL . NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    NUM  shift, and go to state 152
+
+
+State 134
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL . ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    ID  shift, and go to state 153
+
+
+State 135
+
+   26 proc_func_call: x EQUAL x DOT IS_RUNNING OPENPR . CLOSEPR
+
+    CLOSEPR  shift, and go to state 154
+
+
+State 136
+
+   27 proc_func_call: x DOT SUBMIT_JOBS OPENPR parameter CLOSEPR .
+
+    $default  reduce using rule 27 (proc_func_call)
+
+
+State 137
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL expr . CLOSEPR OPENBR statement_list CLOSEBR
+
+    CLOSEPR  shift, and go to state 155
+
+
+State 138
+
+   18 while_loop: WHILE OPENPR condition CLOSEPR OPENBR statement_list CLOSEBR .
+
+    $default  reduce using rule 18 (while_loop)
+
+
+State 139
+
+   19 ifstmnt: IF condition OPENBR statement_list CLOSEBR ELSE OPENBR . statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    INT          shift, and go to state 2
+    FLOAT        shift, and go to state 3
+    FLOAT_CONST  shift, and go to state 4
+    STRING       shift, and go to state 5
+    BOOL         shift, and go to state 6
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    ID1          shift, and go to state 9
+    FOR          shift, and go to state 10
+    WHILE        shift, and go to state 11
+    IF           shift, and go to state 12
+    DISCARD_JOB  shift, and go to state 13
+    VAR          shift, and go to state 14
+    RUN          shift, and go to state 15
+    WAIT         shift, and go to state 16
+    UNARY_OP     shift, and go to state 17
+
+    $default  reduce using rule 3 (statement_list)
+
+    statement_list  go to state 156
+    statement       go to state 20
+    var_decl        go to state 21
+    var_type        go to state 22
+    loop            go to state 23
+    for_loop        go to state 24
+    while_loop      go to state 25
+    ifstmnt         go to state 26
+    func_call       go to state 27
+    wait_call       go to state 28
+    proc_func_call  go to state 29
+    mem_func_call   go to state 30
+    job_func_call   go to state 31
+    obj_constr      go to state 32
+    expr            go to state 33
+    condition       go to state 34
+    arithmatic_op   go to state 35
+    mul             go to state 36
+    factor          go to state 37
+    x               go to state 38
+
+
+State 140
+
+   64 more_var: COMMA x more_var .
+
+    $default  reduce using rule 64 (more_var)
+
+
+State 141
+
+   40 isa_type: ARM .
+
+    $default  reduce using rule 40 (isa_type)
+
+
+State 142
+
+   41 isa_type: AMD .
+
+    $default  reduce using rule 41 (isa_type)
+
+
+State 143
+
+   42 isa_type: CDC .
+
+    $default  reduce using rule 42 (isa_type)
+
+
+State 144
+
+   43 isa_type: MIPS . OPENPR STRING_CONST CLOSEPR
+
+    OPENPR  shift, and go to state 157
+
+
+State 145
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type . COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    COMMA  shift, and go to state 158
+
+
+State 146
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES . mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    PRIMARY    shift, and go to state 147
+    SECONDARY  shift, and go to state 148
+    CACHE      shift, and go to state 149
+
+    mem_type  go to state 159
+
+
+State 147
+
+   46 mem_type: PRIMARY .
+
+    $default  reduce using rule 46 (mem_type)
+
+
+State 148
+
+   47 mem_type: SECONDARY .
+
+    $default  reduce using rule 47 (mem_type)
+
+
+State 149
+
+   48 mem_type: CACHE . OPENPR STRING_CONST CLOSEPR
+
+    OPENPR  shift, and go to state 160
+
+
+State 150
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type . COMMA MEM_SIZE EQUAL NUM CLOSEPR
+
+    COMMA  shift, and go to state 161
+
+
+State 151
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST . COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    COMMA  shift, and go to state 162
+
+
+State 152
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM . COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    COMMA  shift, and go to state 163
+
+
+State 153
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID . COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    COMMA  shift, and go to state 164
+
+
+State 154
+
+   26 proc_func_call: x EQUAL x DOT IS_RUNNING OPENPR CLOSEPR .
+
+    $default  reduce using rule 26 (proc_func_call)
+
+
+State 155
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL expr CLOSEPR . OPENBR statement_list CLOSEBR
+
+    OPENBR  shift, and go to state 165
+
+
+State 156
+
+   19 ifstmnt: IF condition OPENBR statement_list CLOSEBR ELSE OPENBR statement_list . CLOSEBR
+
+    CLOSEBR  shift, and go to state 166
+
+
+State 157
+
+   43 isa_type: MIPS OPENPR . STRING_CONST CLOSEPR
+
+    STRING_CONST  shift, and go to state 167
+
+
+State 158
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA . CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    CLOCK_SPEED  shift, and go to state 168
+
+
+State 159
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type . QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    QUOTES  shift, and go to state 169
+
+
+State 160
+
+   48 mem_type: CACHE OPENPR . STRING_CONST CLOSEPR
+
+    STRING_CONST  shift, and go to state 170
+
+
+State 161
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type COMMA . MEM_SIZE EQUAL NUM CLOSEPR
+
+    MEM_SIZE  shift, and go to state 171
+
+
+State 162
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA . END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    END_POINT  shift, and go to state 172
+
+
+State 163
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA . FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    FLOPS_REQUIRED  shift, and go to state 173
+
+
+State 164
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA . TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    TOPOLOGY  shift, and go to state 174
+
+
+State 165
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL expr CLOSEPR OPENBR . statement_list CLOSEBR
+
+    NUM          shift, and go to state 1
+    INT          shift, and go to state 2
+    FLOAT        shift, and go to state 3
+    FLOAT_CONST  shift, and go to state 4
+    STRING       shift, and go to state 5
+    BOOL         shift, and go to state 6
+    ID           shift, and go to state 7
+    OPENPR       shift, and go to state 8
+    ID1          shift, and go to state 9
+    FOR          shift, and go to state 10
+    WHILE        shift, and go to state 11
+    IF           shift, and go to state 12
+    DISCARD_JOB  shift, and go to state 13
+    VAR          shift, and go to state 14
+    RUN          shift, and go to state 15
+    WAIT         shift, and go to state 16
+    UNARY_OP     shift, and go to state 17
+
+    $default  reduce using rule 3 (statement_list)
+
+    statement_list  go to state 175
+    statement       go to state 20
+    var_decl        go to state 21
+    var_type        go to state 22
+    loop            go to state 23
+    for_loop        go to state 24
+    while_loop      go to state 25
+    ifstmnt         go to state 26
+    func_call       go to state 27
+    wait_call       go to state 28
+    proc_func_call  go to state 29
+    mem_func_call   go to state 30
+    job_func_call   go to state 31
+    obj_constr      go to state 32
+    expr            go to state 33
+    condition       go to state 34
+    arithmatic_op   go to state 35
+    mul             go to state 36
+    factor          go to state 37
+    x               go to state 38
+
+
+State 166
+
+   19 ifstmnt: IF condition OPENBR statement_list CLOSEBR ELSE OPENBR statement_list CLOSEBR .
+
+    $default  reduce using rule 19 (ifstmnt)
+
+
+State 167
+
+   43 isa_type: MIPS OPENPR STRING_CONST . CLOSEPR
+
+    CLOSEPR  shift, and go to state 176
+
+
+State 168
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED . COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    COLON  shift, and go to state 177
+
+
+State 169
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES . COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    COMMA  shift, and go to state 178
+
+
+State 170
+
+   48 mem_type: CACHE OPENPR STRING_CONST . CLOSEPR
+
+    CLOSEPR  shift, and go to state 179
+
+
+State 171
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE . EQUAL NUM CLOSEPR
+
+    EQUAL  shift, and go to state 180
+
+
+State 172
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT . EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    EQUAL  shift, and go to state 181
+
+
+State 173
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED . EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    EQUAL  shift, and go to state 182
+
+
+State 174
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY . EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    EQUAL  shift, and go to state 183
+
+
+State 175
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL expr CLOSEPR OPENBR statement_list . CLOSEBR
+
+    CLOSEBR  shift, and go to state 184
+
+
+State 176
+
+   43 isa_type: MIPS OPENPR STRING_CONST CLOSEPR .
+
+    $default  reduce using rule 43 (isa_type)
+
+
+State 177
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON . n COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 187
+
+
+State 178
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA . MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    MEM_SIZE  shift, and go to state 188
+
+
+State 179
+
+   48 mem_type: CACHE OPENPR STRING_CONST CLOSEPR .
+
+    $default  reduce using rule 48 (mem_type)
+
+
+State 180
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE EQUAL . NUM CLOSEPR
+
+    NUM  shift, and go to state 189
+
+
+State 181
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL . STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    STRING_CONST  shift, and go to state 190
+
+
+State 182
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL . n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 191
+
+
+State 183
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL . top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    STAR  shift, and go to state 192
+    RING  shift, and go to state 193
+    BUS   shift, and go to state 194
+
+    top_type  go to state 195
+
+
+State 184
+
+   17 for_loop: FOR OPENPR expr DEL condition DEL expr CLOSEPR OPENBR statement_list CLOSEBR .
+
+    $default  reduce using rule 17 (for_loop)
+
+
+State 185
+
+   54 n: NUM .
+
+    $default  reduce using rule 54 (n)
+
+
+State 186
+
+   53 n: FLOAT_CONST .
+
+    $default  reduce using rule 53 (n)
+
+
+State 187
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n . COMMA L1_MEM EQUAL ID1 CLOSEPR
+
+    COMMA  shift, and go to state 196
+
+
+State 188
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE . EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    EQUAL  shift, and go to state 197
+
+
+State 189
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE EQUAL NUM . CLOSEPR
+
+    CLOSEPR  shift, and go to state 198
+
+
+State 190
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST . COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    COMMA  shift, and go to state 199
+
+
+State 191
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n . COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    COMMA  shift, and go to state 200
+
+
+State 192
+
+   57 top_type: STAR .
+
+    $default  reduce using rule 57 (top_type)
+
+
+State 193
+
+   58 top_type: RING .
+
+    $default  reduce using rule 58 (top_type)
+
+
+State 194
+
+   59 top_type: BUS .
+
+    $default  reduce using rule 59 (top_type)
+
+
+State 195
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type . COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    COMMA  shift, and go to state 201
+
+
+State 196
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA . L1_MEM EQUAL ID1 CLOSEPR
+
+    L1_MEM  shift, and go to state 202
+
+
+State 197
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL . NUM COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    NUM  shift, and go to state 203
+
+
+State 198
+
+   44 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL mem_type COMMA MEM_SIZE EQUAL NUM CLOSEPR .
+
+    $default  reduce using rule 44 (mem_obj)
+
+
+State 199
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA . BANDWIDTH EQUAL n COMMA n CLOSEPR
+
+    BANDWIDTH  shift, and go to state 204
+
+
+State 200
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA . DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    DEADLINE  shift, and go to state 205
+
+
+State 201
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA . n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 206
+
+
+State 202
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM . EQUAL ID1 CLOSEPR
+
+    EQUAL  shift, and go to state 207
+
+
+State 203
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM . COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    COMMA  shift, and go to state 208
+
+
+State 204
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH . EQUAL n COMMA n CLOSEPR
+
+    EQUAL  shift, and go to state 209
+
+
+State 205
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE . EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    EQUAL  shift, and go to state 210
+
+
+State 206
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n . COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    COMMA  shift, and go to state 211
+
+
+State 207
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL . ID1 CLOSEPR
+
+    ID1  shift, and go to state 212
+
+
+State 208
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA . NAME EQUAL STRING_CONST CLOSEPR
+
+    NAME  shift, and go to state 213
+
+
+State 209
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL . n COMMA n CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 214
+
+
+State 210
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL . n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 215
+
+
+State 211
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA . n COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 216
+
+
+State 212
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 . CLOSEPR
+
+    CLOSEPR  shift, and go to state 217
+
+
+State 213
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME . EQUAL STRING_CONST CLOSEPR
+
+    EQUAL  shift, and go to state 218
+
+
+State 214
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n . COMMA n CLOSEPR
+
+    COMMA  shift, and go to state 219
+
+
+State 215
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n . COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    COMMA  shift, and go to state 220
+
+
+State 216
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n . COMMA NAME EQUAL STRING_CONST CLOSEPR
+
+    COMMA  shift, and go to state 221
+
+
+State 217
+
+   39 processor_obj: PROCESSOR OPENPR ISA EQUAL isa_type COMMA CLOCK_SPEED COLON n COMMA L1_MEM EQUAL ID1 CLOSEPR .
+
+    $default  reduce using rule 39 (processor_obj)
+
+
+State 218
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL . STRING_CONST CLOSEPR
+
+    STRING_CONST  shift, and go to state 222
+
+
+State 219
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA . n CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    n  go to state 223
+
+
+State 220
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA . MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    MEM_REQUIRED  shift, and go to state 224
+
+
+State 221
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA . NAME EQUAL STRING_CONST CLOSEPR
+
+    NAME  shift, and go to state 225
+
+
+State 222
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST . CLOSEPR
+
+    CLOSEPR  shift, and go to state 226
+
+
+State 223
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n . CLOSEPR
+
+    CLOSEPR  shift, and go to state 227
+
+
+State 224
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED . EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    EQUAL  shift, and go to state 228
+
+
+State 225
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME . EQUAL STRING_CONST CLOSEPR
+
+    EQUAL  shift, and go to state 229
+
+
+State 226
+
+   45 mem_obj: MEMORY OPENPR MEMORY_TYPE EQUAL QUOTES mem_type QUOTES COMMA MEM_SIZE EQUAL NUM COMMA NAME EQUAL STRING_CONST CLOSEPR .
+
+    $default  reduce using rule 45 (mem_obj)
+
+
+State 227
+
+   49 link_obj: LINK OPENPR START_POINT EQUAL STRING_CONST COMMA END_POINT EQUAL STRING_CONST COMMA BANDWIDTH EQUAL n COMMA n CLOSEPR .
+
+    $default  reduce using rule 49 (link_obj)
+
+
+State 228
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL . NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    NUM  shift, and go to state 230
+
+
+State 229
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL . STRING_CONST CLOSEPR
+
+    STRING_CONST  shift, and go to state 231
+
+
+State 230
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM . COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    COMMA  shift, and go to state 232
+
+
+State 231
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST . CLOSEPR
+
+    CLOSEPR  shift, and go to state 233
+
+
+State 232
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA . AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    AFFINITY  shift, and go to state 234
+
+
+State 233
+
+   55 cluster_obj: CLUSTER OPENPR PROCESSORS EQUAL ID COMMA TOPOLOGY EQUAL top_type COMMA n COMMA n COMMA NAME EQUAL STRING_CONST CLOSEPR .
+
+    $default  reduce using rule 55 (cluster_obj)
+
+
+State 234
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY . EQUAL OPENSQ float_arr CLOSESQ CLOSEPR
+
+    EQUAL  shift, and go to state 235
+
+
+State 235
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL . OPENSQ float_arr CLOSESQ CLOSEPR
+
+    OPENSQ  shift, and go to state 236
+
+
+State 236
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ . float_arr CLOSESQ CLOSEPR
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    float_arr  go to state 237
+    n          go to state 238
+
+
+State 237
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr . CLOSESQ CLOSEPR
+
+    CLOSESQ  shift, and go to state 239
+
+
+State 238
+
+   51 float_arr: n . COMMA float_arr
+   52          | n . COMMA n
+
+    COMMA  shift, and go to state 240
+
+
+State 239
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ . CLOSEPR
+
+    CLOSEPR  shift, and go to state 241
+
+
+State 240
+
+   51 float_arr: n COMMA . float_arr
+   52          | n COMMA . n
+
+    NUM          shift, and go to state 185
+    FLOAT_CONST  shift, and go to state 186
+
+    float_arr  go to state 242
+    n          go to state 243
+
+
+State 241
+
+   50 job_obj: JOB OPENPR JOB_ID EQUAL NUM COMMA FLOPS_REQUIRED EQUAL n COMMA DEADLINE EQUAL n COMMA MEM_REQUIRED EQUAL NUM COMMA AFFINITY EQUAL OPENSQ float_arr CLOSESQ CLOSEPR .
+
+    $default  reduce using rule 50 (job_obj)
+
+
+State 242
+
+   51 float_arr: n COMMA float_arr .
+
+    $default  reduce using rule 51 (float_arr)
+
+
+State 243
+
+   51 float_arr: n . COMMA float_arr
+   52          | n . COMMA n
+   52          | n COMMA n .
+
+    COMMA  shift, and go to state 240
+
+    $default  reduce using rule 52 (float_arr)
